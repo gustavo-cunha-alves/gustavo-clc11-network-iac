@@ -13,13 +13,30 @@ resource "aws_vpc" "minha_vpc" {
   }
 }
 
+# Correcao primeira issue
+resource "aws_flow_log" "example" {
+  log_destination      = "arn:aws:s3:::vinicius-clc11-tfstate"
+  log_destination_type = "s3"
+  traffic_type         = "ALL"
+  vpc_id               = aws_vpc.minha_vpc.id
+}
+
+# Correcao segunda issue
+resource "aws_default_security_group" "default" {
+  vpc_id = aws_vpc.minha_vpc.id
+  
+  tags = {
+    Name = "my-iac-sg"
+  }
+}
+
 resource "aws_subnet" "public-subnet-1a" {
   vpc_id            = aws_vpc.minha_vpc.id
   cidr_block        = var.public_subnet_1a_range
   availability_zone = "us-east-1a"
 
   tags = {
-    Name = "iac-public-subnet-1aaa"
+    Name = "iac-public-subnet-1a"
   }
 }
 
